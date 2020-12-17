@@ -93,7 +93,7 @@ class User implements UserInterface, EquatableInterface
         $this->historiques = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -164,7 +164,7 @@ class User implements UserInterface, EquatableInterface
         return $this->nomComplet;
     }
 
-    public function setNomComplet( $nomComplet): self
+    public function setNomComplet($nomComplet): self
     {
         $this->nomComplet = $nomComplet;
 
@@ -176,7 +176,7 @@ class User implements UserInterface, EquatableInterface
         return $this->email;
     }
 
-    public function setEmail( $email): self
+    public function setEmail($email): self
     {
         $this->email = $email;
 
@@ -214,15 +214,17 @@ class User implements UserInterface, EquatableInterface
         return $this;
     }
 
-    public function getAvatarUrl($size){
-        return "https://api.adorable.io/avatars/$size/".$this->username;
+    public function getAvatarUrl($size)
+    {
+        return "https://api.adorable.io/avatars/$size/" . $this->username;
     }
 
 
-    function getColorCode() {
+    function getColorCode()
+    {
         $code = dechex(crc32($this->getUsername()));
         $code = substr($code, 0, 6);
-        return "#".$code;
+        return "#" . $code;
     }
 
     /**
@@ -352,7 +354,7 @@ class User implements UserInterface, EquatableInterface
     public function isEqualTo(UserInterface $user)
     {
         if ($user instanceof User)
-        return $this->isValid() && !$this->isDeleted() && $this->getPassword() == $user->getPassword() && $this->getUsername() == $user->getUsername()
-            && $this->getEmail() == $user->getEmail() ;
+            return $this->isValid() && !$this->isDeleted() && $this->getPassword() == $user->getPassword() && $this->getUsername() == $user->getUsername()
+                && $this->getEmail() == $user->getEmail();
     }
 }

@@ -49,6 +49,7 @@
 									<th>{{ "backend.user.username"|trans }}</th>
 									<th>{{ "backend.user.email"|trans }}</th>
 									<th>{{ "backend.user.name"|trans }}</th>
+									<th>{{ "backend.user.role"|trans }}</th>
 									<th>{{ "backend.user.modifier"|trans }}</th>
 									<th>{{ "backend.user.status"|trans }}</th>
 									<th>{{ "backend.user.delete"|trans }}</th>
@@ -60,6 +61,7 @@
 											<td>{{ user.username }}</td>
 											<td>{{ user.email }}</td>
 											<td>{{ user.nomComplet }}</td>
+											<td>{{ user.roles[0] }}</td>
 											<td>
 												<a class="btn btn-primary" href="{{ path('app_admin_edit_user',{"id":user.id}) }}">
 													<i class="fa fa-edit"></i>

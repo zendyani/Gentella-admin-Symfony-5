@@ -56,6 +56,7 @@ class UserController extends BaseController
     public function users()
     {
         $users = $this->userRepository->findAll();
+        // dd($users);
         return $this->render("admin/user/user.html.twig", ["users" => $users]);
     }
 
