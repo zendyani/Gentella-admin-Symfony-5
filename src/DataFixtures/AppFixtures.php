@@ -44,18 +44,16 @@ class AppFixtures extends Fixture
         }
 
         $user = new User();
-        if (!$manager->find(User::class, 1)) {
-            $user->setUsername('admin');
-            $user->setRoles(["ROLE_SUPERUSER"]);
-            $user->setPassword($this->encoder->encodePassword($user, 'admin'));
-            $user->setNomComplet('Admin');
-            $user->setEmail('admin@example.com');
-            $user->setValid(true);
-            $user->setDeleted(false);
-            $user->setAdmin(true);
-            $manager->persist($user);
+        $user->setUsername('admin');
+        $user->setRoles(["ROLE_SUPERUSER"]);
+        $user->setPassword($this->encoder->encodePassword($user, 'admin'));
+        $user->setNomComplet('Admin');
+        $user->setEmail('admin@example.com');
+        $user->setValid(true);
+        $user->setDeleted(false);
+        $user->setAdmin(true);
+        $manager->persist($user);
 
-            $manager->flush();
-        }
+        $manager->flush();
     }
 }

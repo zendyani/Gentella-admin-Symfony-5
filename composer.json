@@ -8,6 +8,7 @@
         "ext-iconv": "*",
         "knplabs/knp-paginator-bundle": "^5.2",
         "liip/imagine-bundle": "^2.3",
+        "ramsey/uuid-doctrine": "^1.6",
         "sensio/framework-extra-bundle": "^5.5",
         "sensiolabs/security-checker": "^6.0",
         "stof/doctrine-extensions-bundle": "^1.4",
