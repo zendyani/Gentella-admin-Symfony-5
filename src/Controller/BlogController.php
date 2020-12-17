@@ -51,7 +51,7 @@ class BlogController extends BaseController
 
     /**
      * @Route("/admin/blog",name="app_admin_blogPosts")
-     * @IsGranted("ROLE_WRITER")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function blogPosts(){
         $blogPosts = $this->blogPostRepository->findAll();
@@ -60,7 +60,7 @@ class BlogController extends BaseController
 
     /**
      * @Route("/admin/blog/new",name="app_admin_new_blogPosts")
-     * @IsGranted("ROLE_WRITER")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function newBlogPost(Request $request){
         $historique = new Historique();
@@ -100,7 +100,7 @@ class BlogController extends BaseController
 
     /**
      * @Route("/admin/blog/edit/{id}",name="app_admin_edit_blogPosts")
-     * @IsGranted("ROLE_WRITER")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function editBlogPost(BlogPost $blogPost,Request $request){
         $oldPost = new OldPost();
