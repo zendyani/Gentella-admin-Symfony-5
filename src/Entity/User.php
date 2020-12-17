@@ -99,7 +99,7 @@ class User implements UserInterface, EquatableInterface
         $this->historiques = new ArrayCollection();
     }
 
-    public function getId(): ?UuidInterface
+    public function getId(): UuidInterface
     {
         return $this->id;
     }
