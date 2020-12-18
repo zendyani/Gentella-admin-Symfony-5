@@ -86,7 +86,14 @@
 										</tr>
 									{% endfor %}
 								</tbody>
-							</table>
+                            </table>
+                            
+
+                            <!-- Insert this where you want the table to appear -->
+<div id="presidents">Loading...</div>
+
+
+
 						</div>
 					</div>
 				</div>
@@ -94,22 +101,10 @@
 		</div>
 	</div>
 {% endblock %}
-{% block javascripts %}
+{% block javascripts %} 
 <script>
-// var dataminetables = $('.dataminetables').dataTable({
-// 	'processing': true,
-//     'serverSide': true,
-//     'serverMethod': 'post',
-// 	"ajax": {
-//           'url':"{{ path('app_admin_users_json') }}"
-// 	},
-// 	'columns': [
-//         { data: 'id' },
-//         { data: 'username' },
-//         { data: 'email' },
-//         { data: 'fullname' },
-//         { data: 'roles' },
-//     ]
-// });
+    $(function() {
+        $('#presidents').initDataTables({{ datatable_settings(datatable) }});
+    });
 </script>
 {% endblock %}

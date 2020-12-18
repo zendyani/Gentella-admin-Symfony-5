@@ -11,11 +11,18 @@ use App\Form\UserFormType;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Omines\DataTablesBundle\Adapter\ArrayAdapter;
+use Omines\DataTablesBundle\Column\TextColumn;
+use Omines\DataTablesBundle\Column\TwigStringColumn;
+use Omines\DataTablesBundle\DataTable;
+use Omines\DataTablesBundle\DataTableFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserController extends BaseController
@@ -55,9 +62,63 @@ class UserController extends BaseController
      */
     public function users()
     {
-        $users = $this->userRepository->findAll();
+        $users = $this->userRepository->findBy([], ['username' => 'ASC']);
         // dd($users);
         return $this->render("admin/user/user.html.twig", ["users" => $users]);
+    }
+
+    /**
+     * @Route("/admin/user-json",name="app_admin_users_json")
+     * @IsGranted("ROLE_SUPERUSER")
+     */
+    public function usersJson(Request $req, SerializerInterface $serializer)
+    {
+        $users = $this->userRepository->findBy([], ['username' => 'ASC']);
+        $data = $serializer->serialize($users, 'json', ['groups' => ['listing']]);
+        // dd(JsonResponse::fromJsonString($data));
+        // dd($req->request->get('columns'));
+        return JsonResponse::fromJsonString($data);
+    }
+
+    /**
+     * @Route("/admin/user-table",name="app_admin_users_table")
+     * @IsGranted("ROLE_SUPERUSER")
+     */
+    public function usersTable(Request $request, DataTableFactory $dataTableFactory)
+    {
+        $table = $dataTableFactory->create()
+            ->add('selection', TextColumn::class, ['label' => '
+                <input type="checkbox" name="selectAll" id="selectAll">
+            '])
+            ->add('username', TextColumn::class, ['orderable' => true])
+            ->add('email', TextColumn::class, ['orderable' => true, 'render' => function ($value, $context) {
+                return sprintf('<a href="%s">%s</a>', $value, $value);
+            }])
+            ->add('fullname', TextColumn::class, ['orderable' => true])
+            ->add('role', TextColumn::class, ['orderable' => true])
+
+            ->add('edit', TwigStringColumn::class, [
+                'template' => '<a class="btn btn-primary" href="{{ url(\'app_admin_users_table\', {id: row.email}) }}"><i class="fa fa-edit"></i></a>',
+            ])
+            ->add('status', TwigStringColumn::class, [
+                'template' => '<a class="btn btn-success activate-link" href="{{ url(\'app_admin_users_table\', {id: row.email}) }}"><i class="fa fa-check"></i></a>',
+            ])
+            ->add('delete', TwigStringColumn::class, [
+                'template' => '<a class="btn btn-danger" href="{{ url(\'app_admin_users_table\', {id: row.email}) }}"><i class="fa fa-trash"></i></a>',
+            ])
+
+            ->createAdapter(ArrayAdapter::class, [
+                ['username' => 'Donald', 'email' => 'Trump@oba.com', 'fullname' => 'Trump is baka', 'role' => 'Admin'],
+                ['username' => 'Barack', 'email' => 'Obama@tru.com', 'fullname' => 'Trump is cool', 'role' => 'Super Admin'],
+            ])
+            ->handleRequest($request);
+
+        if ($table->isCallback()) {
+            return $table->getResponse();
+        }
+
+        $users = $this->userRepository->findAll();
+        return $this->render("admin/user/user_table.html.twig", ["users" => $users, 'datatable' => $table]);
     }
 
     /**

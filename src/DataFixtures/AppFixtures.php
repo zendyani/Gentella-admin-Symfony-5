@@ -43,16 +43,31 @@ class AppFixtures extends Fixture
             }
         }
 
+        // Principal user
         $user = new User();
         $user->setUsername('admin');
         $user->setRoles(["ROLE_SUPERUSER"]);
         $user->setPassword($this->encoder->encodePassword($user, 'admin'));
         $user->setNomComplet('Admin');
-        $user->setEmail('admin@example.com');
+        $user->setEmail("admin@example.com");
         $user->setValid(true);
         $user->setDeleted(false);
         $user->setAdmin(true);
         $manager->persist($user);
+
+        // Data to test pagination
+        for ($i = 1; $i <= 100; $i++) {
+            $user = new User();
+            $user->setUsername('admin' . $i);
+            $user->setRoles(["ROLE_SUPERUSER"]);
+            $user->setPassword($this->encoder->encodePassword($user, 'admin'));
+            $user->setNomComplet('Admin');
+            $user->setEmail("admin{$i}@example.com");
+            $user->setValid(true);
+            $user->setDeleted(false);
+            $user->setAdmin(true);
+            $manager->persist($user);
+        }
 
         $manager->flush();
     }

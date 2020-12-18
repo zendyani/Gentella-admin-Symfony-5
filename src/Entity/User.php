@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -29,23 +30,27 @@ class User implements UserInterface, EquatableInterface
      * @ORM\Column(type="uuid", unique=true)
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
+     * @Groups({"listing"})
      */
     private UuidInterface $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank( message="Ne doit pas être vide")
+     * @Groups({"listing"})
      */
     private $username;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"listing"})
      */
     private $roles = [];
 
     /**
      * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank(message="Ne doit pas être vide")
+     * @Groups({"listing"})
      */
     private $nomComplet;
 
@@ -53,11 +58,13 @@ class User implements UserInterface, EquatableInterface
      * @ORM\Column(type="string", length=100, unique=true)
      * @Assert\NotBlank(message="Ne doit pas être vide")
      * @Assert\Email(message="Email invalide")
+     * @Groups({"listing"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"listing"})
      */
     private $valid;
 
